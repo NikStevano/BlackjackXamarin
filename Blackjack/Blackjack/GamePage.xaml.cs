@@ -54,6 +54,7 @@ namespace Blackjack
 
         public GamePage(int money)
         {
+            // Initialize initial money
             userBalance = money;
             InitializeComponent();
             balance.Text = "Looks like you have $" + userBalance;
@@ -72,9 +73,11 @@ namespace Blackjack
 
         private void NewGame()
         {
+            // Start a new game and clear current field
             playerStack.Children.Clear();
             dealerStack.Children.Clear();
             balance.Text = "Looks like you have $" + userBalance;
+            // Clear current decks and reshuffle
             cardList.Clear();
             cardList = cards.Shuffle();
             standButton.IsVisible = false;
@@ -83,6 +86,7 @@ namespace Blackjack
             betButton.IsVisible = true;
         }
 
+        // Setting layout for game screen
         private void SetLayout()
         {
             var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
@@ -100,8 +104,9 @@ namespace Blackjack
 
         }
 
-        async void OnBetClicked(object sender, EventArgs e)
+        private async void OnBetClicked(object sender, EventArgs e)
         {
+            // Get int value from bet and display it
             string result = await DisplayPromptAsync("Welcome", "How much do you want to bet?", initialValue: "5", keyboard: Keyboard.Numeric);
             while(Convert.ToInt32(result) > userBalance)
             {
@@ -117,7 +122,7 @@ namespace Blackjack
         }
 
         // Deals card to player when pressed
-        void OnGameStart(object sender, EventArgs e)
+        private void OnGameStart(object sender, EventArgs e)
         {
             // Deal first cards
             Card card1 = cardList.Dequeue();
@@ -191,15 +196,15 @@ namespace Blackjack
             if(playerScore == 21 && dealerScore < 21)
             {
                 currentBet = (int)(currentBet * 1.5);
-                dealerBust();
+                DealerBust();
             } else if( playerScore < 21 && dealerScore == 21)
             {
                 dealerStack.Children.Remove(backOfCardImage);
                 dealerStack.Children.Add(dealerCard1Image);
-                playerBust();
+                PlayerBust();
             } else if( playerScore == 21 && dealerScore == 21)
             {
-                tieGame();
+                TieGame();
             }
 
             startButton.IsVisible = false;
@@ -207,7 +212,7 @@ namespace Blackjack
             hitButton.IsVisible = true;
         }
 
-        void OnHitButtonClick(object sender, EventArgs e)
+        private void OnHitButtonClick(object sender, EventArgs e)
         {
             // deal next card
             Card nextCard = cardList.Dequeue();
@@ -228,7 +233,7 @@ namespace Blackjack
             }
             if( playerScore > 21)
             {
-                playerBust();    
+                PlayerBust();    
             }
             if (nextCard.GetNumericValue() == 1 )
             {
@@ -237,17 +242,17 @@ namespace Blackjack
             }
         }
 
-        void OnStandButtonClick(object sender, EventArgs e)
+        private void OnStandButtonClick(object sender, EventArgs e)
         {
             // Remove hit button and check dealer hand
             hitButton.IsVisible = false;
             dealerStack.Children.Remove(backOfCardImage);
             dealerStack.Children.Add(dealerCardImages.ElementAt(0));
-            checkScore();
+            CheckScore();
             
         }
-        
-        void dealerHit()
+
+        private void DealerHit()
         {
             Card nextCard = cardList.Dequeue();
             Image nextCardImage = new Image
@@ -265,72 +270,72 @@ namespace Blackjack
                 dealerScore -= 10;
                 dealerAces--;
             }
-            if (dealerScore > 21)
-            {
-                dealerBust();
-            }
             if (nextCard.GetNumericValue() == 1)
             {
                 dealerHasAce = true;
+                dealerAces++;
             }
-            checkScore();
+            if (dealerScore > 21)
+            {
+                DealerBust();
+            }
+            else
+            {
+                CheckScore();
+            }
+            
         }
 
-        void checkScore()
+        private void CheckScore()
         {
-            if (dealerScore < 17 || (dealerScore > 17 && dealerScore < playerScore))
+            if (dealerScore < 17)
             {
-                dealerHit();
+                DealerHit();
+            }
+            else if ( dealerScore < playerScore)
+            {
+                DealerHit();
             }
             else if( dealerScore > playerScore && dealerScore < 22)
             {
-                playerBust();
+                PlayerBust();
             }
             else if( dealerScore == playerScore)
             {
-                tieGame();
-            } else
-            {
-                dealerHit();
-            }
+                TieGame();
+            } 
         }
 
-        async void playerBust()
+        // Method called when player goes bust
+        private async void PlayerBust()
         {
-            playerScore = 0;
+            // Reset player score after game
             bool answer = await DisplayAlert("Game Over", "Dealer Wins", "One More", "No More");
-            App.CurrentCash = userBalance;
-            if (answer)
-            {
-                NewGame();
-            }
-            else
-            {
-                // TO:DO Application.Current.Quit();
-            }
+            CheckForNewGame(answer);
         }
 
-        async void dealerBust()
+        // Method called when dealer goes bust
+        private async void DealerBust()
         {
-            playerScore = 0;
+            // Reset player score after game
             bool answer = await DisplayAlert("Game Over", "You Win", "One More", "No More");
             userBalance += currentBet * 2;
-            App.CurrentCash = userBalance;
-            if (answer)
-            {
-                NewGame();
-            }
-            else
-            {
-                // TO:DO Application.Current.Quit();
-            }
+            CheckForNewGame(answer);
         }
 
-        async void tieGame()
+        // Method called when game ties
+        private async void TieGame()
         {
-            playerScore = 0;
+            // Reset player score after game
             bool answer = await DisplayAlert("Game Over", "Draw", "One More", "No More");
             userBalance += currentBet;
+            CheckForNewGame(answer);
+        }
+
+        private void CheckForNewGame(bool answer)
+        {
+            playerScore = 0;
+            bet.Text = "0";
             App.CurrentCash = userBalance;
             if (answer)
             {
@@ -338,10 +343,9 @@ namespace Blackjack
             }
             else
             {
-                // TO:DO Application.Current.Quit();
+                // TODO: Application.Current.Quit();
             }
-            
-            
+
         }
     }
 }
