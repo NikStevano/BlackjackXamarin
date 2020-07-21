@@ -7,6 +7,16 @@
              x:Class="Blackjack.GamePage">
     <ContentPage.Content>
         <StackLayout>
+            <StackLayout x:Name="dealerStack" VerticalOptions="Start" HorizontalOptions="CenterAndExpand">
+
+                <Button Text="Hit Me!"
+                Font="Large"
+                BorderWidth="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Clicked="OnButtonClicked" />
+            </StackLayout>
+            
             <Label Text="Welcome to the table"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
@@ -14,6 +24,10 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"
                    />
+            
+            <FlexLayout x:Name="playerStack" JustifyContent="SpaceAround" HorizontalOptions="FillAndExpand" VerticalOptions="End" Wrap="Wrap">
+
+            </FlexLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
