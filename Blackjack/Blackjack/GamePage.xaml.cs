@@ -335,6 +335,7 @@ namespace Blackjack
         private void CheckForNewGame(bool answer)
         {
             playerScore = 0;
+            dealerScore = 0;
             bet.Text = "0";
             App.CurrentCash = userBalance;
             if (answer)
