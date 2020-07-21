@@ -13,8 +13,8 @@ namespace Blackjack
     public class Card
     {
         // Height and Width for a single card from sprite sheet
-        static int cardWidth = 79;
-        static int cardHeight = 123;
+        public static int cardWidth = 79;
+        public static int cardHeight = 123;
         // Card Suits
         public static String[] Suits = new String[] { "Clubs", "Diamonds", "Hearts", "Spades" };
         // Card Values

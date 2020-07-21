@@ -30,6 +30,16 @@ namespace Blackjack
 
         Random rand = new Random();
 
+        // Holds dealer cards
+        private List<Card> dealerCards = new List<Card>();
+        private List<Image> dealerCardImages = new List<Image>();
+        // Holds player cards
+        private List<Card> playerCards = new List<Card>();
+        private List<Image> playerCardImages = new List<Image>();
+        // Image for dealer hidden card
+        private Image backOfCardImage;
+
+
         public GamePage(int money)
         {
             userBalance = money;
@@ -39,29 +49,68 @@ namespace Blackjack
             // Preparing and shuffling cards for game
             GameCards cards = new GameCards(8);
             cardList = cards.Shuffle();
+            // Load image
+            backOfCardImage = new Image
+            {
+                Source = cards.GetBackCardImageSource()
+            };
         }
 
         // Deals card to player when pressed
-        void OnButtonClicked(object sender, EventArgs e)
+        void OnGameStart(object sender, EventArgs e)
         {
-            // pops off queue just to test functionality
-            Card card = cardList.Dequeue();
-
-            Image cardImage = new Image
+            // Deal first cards
+            Card card1 = cardList.Dequeue();
+            Image card1Image = new Image
             {
-                Source = card.GetImageSource()
+                Source = card1.GetImageSource()
             };
+            playerStack.Children.Add(card1Image);
+            playerCards.Add(card1);
+            playerCardImages.Add(card1Image);
 
-            playerStack.Children.Add(cardImage);
+            Card dealerCard1 = cardList.Dequeue();
+            Image dealerCard1Image = new Image
+            {
+                Source = dealerCard1.GetImageSource()
+            };
+            dealerStack.Children.Add(backOfCardImage);
+            dealerCards.Add(dealerCard1);
+            dealerCardImages.Add(dealerCard1Image);
 
+            // deal second card
+            Card card2 = cardList.Dequeue();
+            Image card2Image = new Image
+            {
+                Source = card2.GetImageSource()
+            };
+            playerStack.Children.Add(card2Image);
+            playerCards.Add(card2);
+            playerCardImages.Add(card2Image);
 
+            Card dealerCard2 = cardList.Dequeue();
+            Image dealerCard2Image = new Image
+            {
+                Source = dealerCard2.GetImageSource()
+            };
+            dealerStack.Children.Add(dealerCard2Image);
+            dealerCards.Add(dealerCard2);
+            dealerCardImages.Add(dealerCard2Image);
+
+            startButton.IsVisible = false;
+            standButton.IsVisible = true;
+            hitButton.IsVisible = true;
         }
 
-        // TO:DO: creating game loop
-        void GameStart()
+        void OnHitButtonClick(object sender, EventArgs e)
         {
 
         }
 
+        void OnStandButtonClick(object sender, EventArgs e)
+        {
+
+        }
+        
     }
 }

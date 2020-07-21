@@ -6,28 +6,48 @@
              mc:Ignorable="d"
              x:Class="Blackjack.GamePage">
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout x:Name="dealerStack" VerticalOptions="Start" HorizontalOptions="CenterAndExpand">
+        <StackLayout Padding="30">
 
-                <Button Text="Hit Me!"
+            <FlexLayout x:Name="dealerStack" JustifyContent="SpaceAround" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Wrap="Wrap">
+
+            </FlexLayout>
+
+            <StackLayout x:Name="infoArea" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand">
+                <StackLayout x:Name="buttonArea" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
+                <Button Text="Start"
+                x:Name="startButton"
                 Font="Large"
                 BorderWidth="1"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Clicked="OnGameStart" />
+                
+                <Button Text="Hit"
+                x:Name="hitButton"
+                Font="Large"
+                BorderWidth="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Clicked="OnHitButtonClick"
+                        IsVisible="false"/>
+
+                <Button Text="Stand"
+                x:Name="standButton"
+                Font="Large"
+                BorderWidth="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Clicked="OnStandButtonClick" 
+                        IsVisible="false"/>
+                </StackLayout>
+                <Label x:Name="balance" />
             </StackLayout>
-            
-            <Label Text="Welcome to the table"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Label x:Name="balance"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand"
-                   />
-            
+
+
             <FlexLayout x:Name="playerStack" JustifyContent="SpaceAround" HorizontalOptions="FillAndExpand" VerticalOptions="End" Wrap="Wrap">
 
             </FlexLayout>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
