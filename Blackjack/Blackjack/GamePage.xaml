@@ -34,7 +34,7 @@
                 VerticalOptions="Center"
                 Clicked="OnBetClicked" />
                     
-                    <Button Text="Start"
+                    <Button Text="Deal"
                 x:Name="startButton"
                 Font="Large"
                 BorderWidth="1"

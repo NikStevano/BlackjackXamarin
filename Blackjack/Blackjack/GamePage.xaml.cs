@@ -17,16 +17,14 @@ namespace Blackjack
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GamePage : ContentPage
     {
-        private static int NUM_DECKS = 8;
-
         // Values for card sprite sheet, 4x13 and each card is 79x123
         private int userBalance;
 
-        // Stores all cards and pops from top to deal
-        Queue<Card> cardList;
+        // Core game objects
+        private Core core = new Core();
 
-        // All playing cards
-        GameCards cards = new GameCards(NUM_DECKS);
+        // Stores all cards and pops from top to deal
+        private Queue<Card> cardList;
 
         Random rand = new Random();
 
@@ -42,9 +40,6 @@ namespace Blackjack
         private List<Image> playerCardImages = new List<Image>();
         private int playerScore;
 
-        // Image for dealer hidden card
-        private Image backOfCardImage;
-
         // bool to see if player/dealer have ace for later calculations
         private bool playerHasAce = false;
         private bool dealerHasAce = false;
@@ -59,16 +54,11 @@ namespace Blackjack
             InitializeComponent();
             balance.Text = "Looks like you have $" + userBalance;
 
-            // Load image
-            backOfCardImage = new Image
-            {
-                Source = cards.GetBackCardImageSource()
-            };
             // TODO: fix android
             SetLayout();
 
             // Preparing and shuffling cards for game
-            cardList = cards.Shuffle();
+            cardList = core.GetGameCards();
         }
 
         private void NewGame()
@@ -79,7 +69,7 @@ namespace Blackjack
             balance.Text = "Looks like you have $" + userBalance;
             // Clear current decks and reshuffle
             cardList.Clear();
-            cardList = cards.Shuffle();
+            cardList = core.GetGameCards();
             standButton.IsVisible = false;
             hitButton.IsVisible = false;
             startButton.IsVisible = false;
@@ -126,49 +116,33 @@ namespace Blackjack
         {
             // Deal first cards
             Card card1 = cardList.Dequeue();
-            Image card1Image = new Image
-            {
-                Source = card1.GetImageSource()
-            };
-            playerStack.Children.Add(card1Image);
+            playerStack.Children.Add(core.GetCardImage(card1.CardID));
             playerCards.Add(card1);
-            playerCardImages.Add(card1Image);
-            playerScore += card1.GetNumericValue();
+            playerCardImages.Add(core.GetCardImage(card1.CardID));
+            playerScore += card1.NumericValue;
             
             Card dealerCard1 = cardList.Dequeue();
-            Image dealerCard1Image = new Image
-            {
-                Source = dealerCard1.GetImageSource()
-            };
-            dealerStack.Children.Add(backOfCardImage);
+            dealerStack.Children.Add(core.GetBackOfCardImage());  // hidden card
             dealerCards.Add(dealerCard1);
-            dealerCardImages.Add(dealerCard1Image);
-            dealerScore += dealerCard1.GetNumericValue();
+            dealerCardImages.Add(core.GetCardImage(dealerCard1.CardID));
+            dealerScore += dealerCard1.NumericValue;
 
             // deal second card
             Card card2 = cardList.Dequeue();
-            Image card2Image = new Image
-            {
-                Source = card2.GetImageSource()
-            };
-            playerStack.Children.Add(card2Image);
+            playerStack.Children.Add(core.GetCardImage(card2.CardID));
             playerCards.Add(card2);
-            playerCardImages.Add(card2Image);
-            playerScore += card2.GetNumericValue();
+            playerCardImages.Add(core.GetCardImage(card2.CardID));
+            playerScore += card2.NumericValue;
             
 
             Card dealerCard2 = cardList.Dequeue();
-            Image dealerCard2Image = new Image
-            {
-                Source = dealerCard2.GetImageSource()
-            };
-            dealerStack.Children.Add(dealerCard2Image);
+            dealerStack.Children.Add(core.GetCardImage(dealerCard2.CardID));
             dealerCards.Add(dealerCard2);
-            dealerCardImages.Add(dealerCard2Image);
-            dealerScore += dealerCard2.GetNumericValue();
+            dealerCardImages.Add(core.GetCardImage(dealerCard2.CardID));
+            dealerScore += dealerCard2.NumericValue;
 
             // Checking if player got ace in initial deal
-            if (card1.GetNumericValue() == 1 || card2.GetNumericValue() == 1)
+            if (card1.NumericValue == 1 || card2.NumericValue == 1)
             {
                 playerHasAce = true;
                 if(playerScore == 2)
@@ -181,7 +155,7 @@ namespace Blackjack
             }
 
             // Checking if dealer got ace in initial deal
-            if (dealerCard1.GetNumericValue() == 1 || dealerCard2.GetNumericValue() == 1)
+            if (dealerCard1.NumericValue == 1 || dealerCard2.NumericValue == 1)
             {
                 dealerHasAce = true;
                 if(dealerScore == 2)
@@ -197,12 +171,14 @@ namespace Blackjack
             {
                 currentBet = (int)(currentBet * 1.5);
                 DealerBust();
-            } else if( playerScore < 21 && dealerScore == 21)
+            }
+            else if( playerScore < 21 && dealerScore == 21)
             {
-                dealerStack.Children.Remove(backOfCardImage);
-                dealerStack.Children.Add(dealerCard1Image);
+                dealerStack.Children.Remove(core.GetBackOfCardImage());
+                dealerStack.Children.Add(core.GetCardImage(dealerCard1.CardID));
                 PlayerBust();
-            } else if( playerScore == 21 && dealerScore == 21)
+            }
+            else if( playerScore == 21 && dealerScore == 21)
             {
                 TieGame();
             }
@@ -216,14 +192,10 @@ namespace Blackjack
         {
             // deal next card
             Card nextCard = cardList.Dequeue();
-            Image nextCardImage = new Image
-            {
-                Source = nextCard.GetImageSource()
-            };
-            playerStack.Children.Add(nextCardImage);
+            playerStack.Children.Add(core.GetCardImage(nextCard.CardID));
             playerCards.Add(nextCard);
-            playerCardImages.Add(nextCardImage);
-            playerScore += nextCard.GetNumericValue();
+            playerCardImages.Add(core.GetCardImage(nextCard.CardID));
+            playerScore += nextCard.NumericValue;
 
             // Check player score after next card
             if( playerHasAce && playerScore > 21 && playerAces > 0)
@@ -235,7 +207,7 @@ namespace Blackjack
             {
                 PlayerBust();    
             }
-            if (nextCard.GetNumericValue() == 1 )
+            if (nextCard.NumericValue == 1 )
             {
                 playerHasAce = true;
                 playerAces++;
@@ -246,7 +218,7 @@ namespace Blackjack
         {
             // Remove hit button and check dealer hand
             hitButton.IsVisible = false;
-            dealerStack.Children.Remove(backOfCardImage);
+            dealerStack.Children.Remove(core.GetBackOfCardImage());
             dealerStack.Children.Add(dealerCardImages.ElementAt(0));
             CheckScore();
             
@@ -255,14 +227,10 @@ namespace Blackjack
         private void DealerHit()
         {
             Card nextCard = cardList.Dequeue();
-            Image nextCardImage = new Image
-            {
-                Source = nextCard.GetImageSource()
-            };
-            dealerStack.Children.Add(nextCardImage);
+            dealerStack.Children.Add(core.GetCardImage(nextCard.CardID));
             dealerCards.Add(nextCard);
-            dealerCardImages.Add(nextCardImage);
-            dealerScore += nextCard.GetNumericValue();
+            dealerCardImages.Add(core.GetCardImage(nextCard.CardID));
+            dealerScore += nextCard.NumericValue;
 
             // Check dealer score after hit
             if (dealerHasAce && dealerScore > 21 && dealerAces > 0)
@@ -270,7 +238,7 @@ namespace Blackjack
                 dealerScore -= 10;
                 dealerAces--;
             }
-            if (nextCard.GetNumericValue() == 1)
+            if (nextCard.NumericValue == 1)
             {
                 dealerHasAce = true;
                 dealerAces++;
@@ -336,6 +304,10 @@ namespace Blackjack
         {
             playerScore = 0;
             dealerScore = 0;
+            playerAces = 0;
+            dealerAces = 0;
+            playerHasAce = false;
+            dealerHasAce = false; 
             bet.Text = "0";
             App.CurrentCash = userBalance;
             if (answer)
