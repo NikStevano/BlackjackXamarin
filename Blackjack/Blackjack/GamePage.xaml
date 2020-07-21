@@ -4,49 +4,75 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             BackgroundColor="LightGreen"
              x:Class="Blackjack.GamePage">
     <ContentPage.Content>
-        <StackLayout Padding="30">
+
+        <StackLayout Padding="0,30,0,20" BackgroundColor="LightGreen">
+
+            <Label Text="DEALER" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Padding="10"/>
 
             <FlexLayout x:Name="dealerStack" JustifyContent="SpaceAround" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Wrap="Wrap">
 
             </FlexLayout>
 
-            <StackLayout x:Name="infoArea" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand">
-                <StackLayout x:Name="buttonArea" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
-                <Button Text="Start"
+            <StackLayout x:Name="potArea" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
+                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
+                    <Label x:Name="bet" TextColor="White" Text="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout x:Name="infoArea" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="WhiteSmoke">
+                <StackLayout x:Name="buttonArea" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Padding="10">
+
+                    <Button Text="Place Bet"
+                x:Name="betButton"
+                Font="Large"
+                BorderWidth="1"
+                            Padding="5"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Center"
+                Clicked="OnBetClicked" />
+                    
+                    <Button Text="Start"
                 x:Name="startButton"
                 Font="Large"
                 BorderWidth="1"
-                HorizontalOptions="Center"
+                            Padding="5"
+                HorizontalOptions="CenterAndExpand"
                 VerticalOptions="Center"
-                Clicked="OnGameStart" />
-                
-                <Button Text="Hit"
+                Clicked="OnGameStart"
+                            IsVisible="false"/>
+
+                    <Button Text="Hit"
                 x:Name="hitButton"
                 Font="Large"
                 BorderWidth="1"
-                HorizontalOptions="Center"
+                            Padding="5"
+                HorizontalOptions="FillAndExpand"
                 VerticalOptions="Center"
                 Clicked="OnHitButtonClick"
                         IsVisible="false"/>
 
-                <Button Text="Stand"
+                    <Button Text="Stand"
                 x:Name="standButton"
                 Font="Large"
                 BorderWidth="1"
-                HorizontalOptions="Center"
+                            Padding="5"
+                HorizontalOptions="FillAndExpand"
                 VerticalOptions="Center"
                 Clicked="OnStandButtonClick" 
                         IsVisible="false"/>
                 </StackLayout>
-                <Label x:Name="balance" />
+                <Label x:Name="balance" HorizontalOptions="CenterAndExpand" Padding="10"/>
             </StackLayout>
 
 
             <FlexLayout x:Name="playerStack" JustifyContent="SpaceAround" HorizontalOptions="FillAndExpand" VerticalOptions="End" Wrap="Wrap">
 
             </FlexLayout>
+
+            <Label Text="PLAYER" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Padding="10"/>
 
         </StackLayout>
     </ContentPage.Content>

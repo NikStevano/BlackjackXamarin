@@ -4,25 +4,30 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Blackjack.StartPage">
+             x:Class="Blackjack.StartPage" BackgroundColor="LightGreen">
 
-    <Frame CornerRadius="10"  OutlineColor="Gray" BorderColor="DarkGray" Padding="0" HasShadow="False" IsClippedToBounds="True" Margin="5" BackgroundColor="White" >
+    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="40" BackgroundColor="LightGreen">
 
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="15,10" BackgroundColor="White" Margin="5">
-            <Label Text="Welcome to the Casino, hope your pockets are full" TextColor="Black" Padding="0,20,0,0"/>
-            <Label Text="How much cash are you bringing" TextColor="Black" Padding="0,20,0,0"/>
-            <Picker x:Name="CashPicker">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:Int16}">
-                        <x:Int16>10</x:Int16>
-                        <x:Int16>50</x:Int16>
-                        <x:Int16>100</x:Int16>
-                        <x:Int16>500</x:Int16>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-            <Button Text="Enter Table" Clicked="OnContinueButtonClicked" BackgroundColor="Blue" TextColor="White" />
-        </StackLayout>
-    </Frame>
+        <Label Text="Welcome to the Casino, hope your pockets are full!" TextColor="Black" Padding="0,20,0,30" VerticalOptions="Start"/>
+
+        <Frame CornerRadius="10"  OutlineColor="Gray" BorderColor="DarkGray" Padding="0" HasShadow="False"
+             IsClippedToBounds="True" Margin="5" BackgroundColor="White" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="15,10" BackgroundColor="White" Margin="5">
+                <Label Text="How much cash are you bringing?" TextColor="Black" Padding="0,20,0,0"/>
+                <Picker x:Name="CashPicker">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:Int16}">
+                            <x:Int16>10</x:Int16>
+                            <x:Int16>50</x:Int16>
+                            <x:Int16>100</x:Int16>
+                            <x:Int16>500</x:Int16>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <Button Text="Enter Table" Clicked="OnContinueButtonClicked" BackgroundColor="Blue" TextColor="White" />
+            </StackLayout>
+        </Frame>
+    </StackLayout>
 
 </ContentPage>

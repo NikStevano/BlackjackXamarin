@@ -7,7 +7,7 @@ namespace Blackjack
     public partial class App : Application
     {
 
-        public static int StartingCash { get; set; }
+        public static int CurrentCash { get; set; }
         public App()
         {
             InitializeComponent();

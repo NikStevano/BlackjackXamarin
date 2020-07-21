@@ -24,7 +24,7 @@ namespace Blackjack
             {
                 int UserCashIndex = CashPicker.SelectedIndex;
                 int UserCash = CashLookup[UserCashIndex];
-                App.StartingCash = UserCash;
+                App.CurrentCash = UserCash;
                 Application.Current.MainPage = new GamePage(UserCash);
             }
             else
