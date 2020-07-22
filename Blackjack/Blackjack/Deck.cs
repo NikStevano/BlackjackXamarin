@@ -52,10 +52,10 @@ namespace Blackjack
             }
 
             for ( int i=0; i<52; i++) {
-                int cardSuiteIndex = i % 4;  // card Suite
+                int cardSuiteIndex = i / 13;  // card Suite
                 int cardValueIndex = i % 13; // card Value, i.e "A", "10" ...
                 int cardNumValue = (i+1) % 13;  // card Numeric Value
-                if (cardNumValue > 10)
+                if (cardValueIndex > 9)  // Jacks and above
                     cardNumValue = 10;
 
                 Cards[i] = new Card(i, Core.Suits[cardSuiteIndex], Core.Values[cardValueIndex], cardNumValue );

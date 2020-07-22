@@ -21,7 +21,6 @@ Features:
 Known Issues:
     
     Game logic needs cleanup/optimization
-    Application quit not working
     Not all game end conditions implemented
     Android layout buggy (iOS should be fine)
     
