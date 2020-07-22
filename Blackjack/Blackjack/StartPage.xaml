@@ -8,13 +8,13 @@
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Padding="40" BackgroundColor="LightGreen">
 
-        <Label Text="Welcome to the Casino, hope your pockets are full!" TextColor="Black" Padding="0,20,0,30" VerticalOptions="Start"/>
+        <Label Text="Welcome to the Casino, hope your pockets are full!" TextColor="Black" Padding="0,20,0,30" VerticalOptions="Start" FontSize="Medium"/>
 
         <Frame CornerRadius="10"  OutlineColor="Gray" BorderColor="DarkGray" Padding="0" HasShadow="False"
              IsClippedToBounds="True" Margin="5" BackgroundColor="White" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
 
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="15,10" BackgroundColor="White" Margin="5">
-                <Label Text="How much cash are you bringing?" TextColor="Black" Padding="0,20,0,0"/>
+                <Label Text="How much cash are you bringing?" TextColor="Black" Padding="0,20,0,0" FontSize="Default"/>
                 <Picker x:Name="CashPicker">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:Int16}">

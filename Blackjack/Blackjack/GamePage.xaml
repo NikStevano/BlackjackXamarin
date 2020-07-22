@@ -18,7 +18,7 @@
 
             <StackLayout x:Name="potArea" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
-                    <Label x:Name="bet" TextColor="White" Text="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label x:Name="bet" TextColor="White" Text="0" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Medium"/>
                 </StackLayout>
             </StackLayout>
 
@@ -32,7 +32,7 @@
                             Padding="5"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="Center"
-                Clicked="OnBetClicked" />
+                Clicked="OnBetClicked"/>
                     
                     <Button Text="Deal"
                 x:Name="startButton"

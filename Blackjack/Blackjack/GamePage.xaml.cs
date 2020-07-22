@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
-using SkiaSharp;
-using SkiaSharp.Views.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
 
@@ -32,12 +24,10 @@ namespace Blackjack
 
         // Holds dealer cards
         private List<Card> dealerCards = new List<Card>();
-        private List<Image> dealerCardImages = new List<Image>();
         private int dealerScore;
 
         // Holds player cards
         private List<Card> playerCards = new List<Card>();
-        private List<Image> playerCardImages = new List<Image>();
         private int playerScore;
 
         // bool to see if player/dealer have ace for later calculations
@@ -135,25 +125,23 @@ namespace Blackjack
         {
             // Deal first cards
             Card card1 = cardList.Dequeue();
-            playerStack.Children.Add(core.GetCardImage(card1.CardID));
+            // Create new image so there is no chance of using same image for dealer cards
+            playerStack.Children.Add(new Image { Source = core.GetCardImage(card1.CardID).Source });
             playerCards.Add(card1);
-            playerCardImages.Add(core.GetCardImage(card1.CardID));
+
             Card dealerCard1 = cardList.Dequeue();
             dealerStack.Children.Add(core.GetBackOfCardImage());  // hidden card
             dealerCards.Add(dealerCard1);
-            dealerCardImages.Add(core.GetCardImage(dealerCard1.CardID));
 
             // deal second card
             Card card2 = cardList.Dequeue();
-            playerStack.Children.Add(core.GetCardImage(card2.CardID));
+            playerStack.Children.Add(new Image { Source = core.GetCardImage(card2.CardID).Source });
             playerCards.Add(card2);
-            playerCardImages.Add(core.GetCardImage(card2.CardID));
             
 
             Card dealerCard2 = cardList.Dequeue();
             dealerStack.Children.Add(core.GetCardImage(dealerCard2.CardID));
             dealerCards.Add(dealerCard2);
-            dealerCardImages.Add(core.GetCardImage(dealerCard2.CardID));
 
             playerScore = CalculatePlayerScore();
             dealerScore = CalculateDealerScore();
@@ -186,9 +174,8 @@ namespace Blackjack
         {
             // deal next card
             Card nextCard = cardList.Dequeue();
-            playerStack.Children.Add(core.GetCardImage(nextCard.CardID));
+            playerStack.Children.Add(new Image { Source = core.GetCardImage(nextCard.CardID).Source });
             playerCards.Add(nextCard);
-            playerCardImages.Add(core.GetCardImage(nextCard.CardID));
 
             // Check player score after next card
             playerScore = CalculatePlayerScore();
@@ -210,7 +197,7 @@ namespace Blackjack
             hitButton.IsVisible = false;
             standButton.IsVisible = false;
             dealerStack.Children.Remove(core.GetBackOfCardImage());
-            dealerStack.Children.Add(dealerCardImages.ElementAt(0));
+            dealerStack.Children.Add(core.GetCardImage( dealerCards[0].CardID));
             DealerAction();
             
         }
@@ -220,7 +207,6 @@ namespace Blackjack
             Card nextCard = cardList.Dequeue();
             dealerStack.Children.Add(core.GetCardImage(nextCard.CardID));
             dealerCards.Add(nextCard);
-            dealerCardImages.Add(core.GetCardImage(nextCard.CardID));
 
             // Check dealer score after hit
             dealerScore = CalculateDealerScore();
